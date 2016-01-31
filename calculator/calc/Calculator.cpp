@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Calculator.h"
 
-float Calculator::parseExpr(boost::string_ref &ref)
+float Calculator::parseExpr(std::string_view &ref)
 {
 	float result = parseExprSum(ref);
 	if (!ref.empty())
@@ -13,7 +13,7 @@ float Calculator::parseExpr(boost::string_ref &ref)
 }
 
 
-float Calculator::parseExprSum(boost::string_ref &ref)
+float Calculator::parseExprSum(std::string_view &ref)
 {
 	float value = parseExprMul(ref);
 	while (true)
@@ -40,7 +40,7 @@ float Calculator::parseExprSum(boost::string_ref &ref)
 	return value;
 }
 
-float Calculator::parseExprMul(boost::string_ref &ref)
+float Calculator::parseExprMul(std::string_view &ref)
 {
 	float value = parseSymbol(ref);
 	while (true)
@@ -67,7 +67,7 @@ float Calculator::parseExprMul(boost::string_ref &ref)
 	return value;
 }
 
-float Calculator::parseSymbol(boost::string_ref &ref)
+float Calculator::parseSymbol(std::string_view &ref)
 {
 	float value = 0;
 	skipSpaces(ref);
@@ -92,7 +92,7 @@ float Calculator::parseSymbol(boost::string_ref &ref)
 	}
 }
 
-float Calculator::parseFloat(boost::string_ref &ref)
+float Calculator::parseFloat(std::string_view &ref)
 {
 	float value = 0;
 	bool parsedAny = false;
@@ -130,7 +130,7 @@ float Calculator::parseFloat(boost::string_ref &ref)
 	return value;
 }
 
-void Calculator::skipSpaces(boost::string_ref &ref)
+void Calculator::skipSpaces(std::string_view &ref)
 {
 	size_t i = 0;
 	while (i < ref.size() && std::isspace(ref[i]))

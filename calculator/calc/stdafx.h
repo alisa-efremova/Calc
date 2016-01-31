@@ -10,8 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
-
-#include <boost/utility/string_ref.hpp>
+#include "string_view.h"
 #include <cctype>
 
 
