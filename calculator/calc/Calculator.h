@@ -9,6 +9,7 @@ struct Calculator
 	static float parseExpr(boost::string_ref &ref);
 
 private:
+	static float parseSymbol(boost::string_ref &ref);
 	static float parseFloat(boost::string_ref &ref);
 	static float parseExprMul(boost::string_ref &ref);
 	static float parseExprSum(boost::string_ref &ref);
