@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <algorithm>
 
 #if defined(_MSC_VER) && (_MSC_VER <= 1800)
 #if !defined(constexpr)
@@ -208,7 +209,7 @@ namespace std
 		constexpr basic_string_view substr(size_type pos = 0, size_type n = npos) const
 		{
 			if (pos > size()) {
-				throw out_of_range();
+				throw out_of_range("");
 			}
 
 			size_type rlen = std::min(n, size() - pos);

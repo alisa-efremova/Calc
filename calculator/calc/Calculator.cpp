@@ -1,21 +1,23 @@
 #include "stdafx.h"
 #include "Calculator.h"
 
-float Calculator::parseExpr(std::string_view &ref)
+#define PI 3.14159265
+
+double Calculator::parseExpr(std::string_view &ref)
 {
-	float result = parseExprSum(ref);
+	double result = parseExprSum(ref);
 	if (!ref.empty())
 	{
-		return std::numeric_limits<float>::quiet_NaN();
+		return std::numeric_limits<double>::quiet_NaN();
 	}
 
 	return result;
 }
 
 
-float Calculator::parseExprSum(std::string_view &ref)
+double Calculator::parseExprSum(std::string_view &ref)
 {
-	float value = parseExprMul(ref);
+	double value = parseExprMul(ref);
 	while (true)
 	{
 		skipSpaces(ref);
@@ -40,9 +42,9 @@ float Calculator::parseExprSum(std::string_view &ref)
 	return value;
 }
 
-float Calculator::parseExprMul(std::string_view &ref)
+double Calculator::parseExprMul(std::string_view &ref)
 {
-	float value = parseSymbol(ref);
+	double value = parseSymbol(ref);
 	while (true)
 	{
 		skipSpaces(ref);
@@ -67,9 +69,9 @@ float Calculator::parseExprMul(std::string_view &ref)
 	return value;
 }
 
-float Calculator::parseSymbol(std::string_view &ref)
+double Calculator::parseSymbol(std::string_view &ref)
 {
-	float value = 0;
+	double value = 0;
 	skipSpaces(ref);
 	if (!ref.empty() && ref[0] == '(')
 	{
@@ -83,31 +85,58 @@ float Calculator::parseSymbol(std::string_view &ref)
 		}
 		else
 		{
-			return std::numeric_limits<float>::quiet_NaN();
+			return std::numeric_limits<double>::quiet_NaN();
 		}
+	}
+	else if (!ref.empty() && !std::isdigit(ref[0]))
+	{
+		return parseFunction(ref);
 	}
 	else
 	{
-		return parseFloat(ref);
+		return parseDouble(ref);
 	}
 }
 
-float Calculator::parseFloat(std::string_view &ref)
+double Calculator::parseFunction(std::string_view &ref)
 {
-	float value = 0;
+	if (ref.size() >= 3)
+	{
+		std::string_view partStr = ref.substr(0, 3);
+		
+		if (partStr == std::string_view("sin"))
+		{
+			ref.remove_prefix(3);
+			std::cout << "sin";
+			double value = parseSymbol(ref);
+			if (value != std::numeric_limits<double>::quiet_NaN())
+			{
+				value = sin(value * PI / 180);
+			}
+			
+			return value;
+		}
+	}
+	
+	return std::numeric_limits<double>::quiet_NaN();
+}
+
+double Calculator::parseDouble(std::string_view &ref)
+{
+	double value = 0;
 	bool parsedAny = false;
 	skipSpaces(ref);
 	while (!ref.empty() && std::isdigit(ref[0]))
 	{
 		parsedAny = true;
 		const int digit = ref[0] - '0';
-		value = value * 10.0f + float(digit);
+		value = value * 10.0f + double(digit);
 		ref.remove_prefix(1);
 	}
 
 	if (!parsedAny)
 	{
-		return std::numeric_limits<float>::quiet_NaN();
+		return std::numeric_limits<double>::quiet_NaN();
 	}
 
 	if (ref.empty() || (ref[0] != '.'))
@@ -117,12 +146,12 @@ float Calculator::parseFloat(std::string_view &ref)
 	}
 
 	ref.remove_prefix(1);
-	float factor = 1.f;
+	double factor = 1.f;
 	while (!ref.empty() && std::isdigit(ref[0]))
 	{
 		const int digit = ref[0] - '0';
 		factor *= 0.1f;
-		value += factor * float(digit);
+		value += factor * double(digit);
 		ref.remove_prefix(1);
 	}
 

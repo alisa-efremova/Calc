@@ -3,9 +3,9 @@
 
 int main()
 {
-	std::string expr = " 4+ 5*6 - 1/2  ";
+	std::string expr = " sin(( 90) ) + 1  ";
 	std::string_view ref(expr);
-	std::cout << std::endl << "   " << Calculator::parseExpr(ref) << std::endl;
+	std::cout << std::endl << "result: " << Calculator::parseExpr(ref) << std::endl;
 	return 0;
 }
 
