@@ -23,11 +23,13 @@ float Calculator::parseExprSum(boost::string_ref &ref)
 		{
 			ref.remove_prefix(1);
 			value += parseExprMul(ref);
+			std::cout << "+ ";
 		}
 		else if (!ref.empty() && ref[0] == '-')
 		{
 			ref.remove_prefix(1);
 			value -= parseExprMul(ref);
+			std::cout << "- ";
 		}
 		else
 		{
@@ -48,11 +50,13 @@ float Calculator::parseExprMul(boost::string_ref &ref)
 		{
 			ref.remove_prefix(1);
 			value *= parseSymbol(ref);
+			std::cout << "* ";
 		}
 		else if (!ref.empty() && ref[0] == '/')
 		{
 			ref.remove_prefix(1);
 			value /= parseSymbol(ref);
+			std::cout << "/ ";
 		}
 		else
 		{
@@ -108,6 +112,7 @@ float Calculator::parseFloat(boost::string_ref &ref)
 
 	if (ref.empty() || (ref[0] != '.'))
 	{
+		std::cout << value << " ";
 		return value;
 	}
 
@@ -121,6 +126,7 @@ float Calculator::parseFloat(boost::string_ref &ref)
 		ref.remove_prefix(1);
 	}
 
+	std::cout << value << " ";
 	return value;
 }
 
