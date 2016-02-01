@@ -100,22 +100,37 @@ double Calculator::parseSymbol(std::string_view &ref)
 
 double Calculator::parseFunction(std::string_view &ref)
 {
-	if (ref.size() >= 3)
+	try
 	{
 		std::string_view partStr = ref.substr(0, 3);
-		
+
 		if (partStr == std::string_view("sin"))
 		{
 			ref.remove_prefix(3);
 			std::cout << "sin";
-			double value = parseSymbol(ref);
-			if (value != std::numeric_limits<double>::quiet_NaN())
-			{
-				value = sin(value * PI / 180);
-			}
-			
-			return value;
+			return sin(parseSymbol(ref) * PI / 180);
 		}
+		else if (partStr == std::string_view("cos"))
+		{
+			ref.remove_prefix(3);
+			std::cout << "cos";
+			return cos(parseSymbol(ref) * PI / 180);
+		}
+		else
+		{
+			std::string_view partStr = ref.substr(0, 4);
+
+			if (partStr == std::string_view("sqrt"))
+			{
+				ref.remove_prefix(4);
+				std::cout << "sqrt";
+				return sqrt(parseSymbol(ref));
+			}
+		}
+	}
+	catch(const std::out_of_range& e)
+	{
+		return std::numeric_limits<double>::quiet_NaN();
 	}
 	
 	return std::numeric_limits<double>::quiet_NaN();
