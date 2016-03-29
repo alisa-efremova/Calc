@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\PrintStrategy">
+      <UniqueIdentifier>{41cdba11-9142-43a4-887b-9c471441a737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Calculator">
+      <UniqueIdentifier>{5863d200-e852-4aba-b922-c0f787fa5e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,11 +30,20 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Calculator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="string_view.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackMachinePrintStrategy.h">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="PostfixNotationPrintStrategy.h">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintSrategy.h">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculator.h">
+      <Filter>Source Files\Calculator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,8 +53,17 @@
     <ClCompile Include="calc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StackMachinePrintStrategy.cpp">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="PostfixNotationPrintStrategy.cpp">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintStrategy.cpp">
+      <Filter>Source Files\PrintStrategy</Filter>
+    </ClCompile>
     <ClCompile Include="Calculator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Calculator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -66,7 +66,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculator.h" />
+    <ClInclude Include="PrintSrategy.h" />
+    <ClInclude Include="PostfixNotationPrintStrategy.h" />
+    <ClInclude Include="StackMachinePrintStrategy.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="string_view.h" />
     <ClInclude Include="targetver.h" />
@@ -91,6 +94,9 @@
   <ItemGroup>
     <ClCompile Include="calc.cpp" />
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="PostfixNotationPrintStrategy.cpp" />
+    <ClCompile Include="PrintStrategy.cpp" />
+    <ClCompile Include="StackMachinePrintStrategy.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

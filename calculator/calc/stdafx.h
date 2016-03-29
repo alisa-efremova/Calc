@@ -7,14 +7,12 @@
 
 #include "targetver.h"
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
 #include "string_view.h"
 #include <cctype>
 #include <math.h> 
-
-
-
-
-// TODO: reference additional headers your program requires here

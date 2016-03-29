@@ -1,19 +1,25 @@
 #pragma once
+#include "PrintSrategy.h"
+#include <memory>
 
 struct Calculator
 {
-	Calculator() = delete;
+	Calculator(std::unique_ptr<PrintStrategy> && printStrategy);
+	~Calculator();
 
 	// parses expressions like "7 / 2 + 12 - 3 * 4 + 17 - 2 * 7"
 	// calculates and returns result.
-	static double parseExpr(std::string_view &ref);
+	double parseExpr(std::string_view &ref);
 
 private:
-	static double parseSymbol(std::string_view &ref);
-	static double parseDouble(std::string_view &ref);
-	static double parseExprMul(std::string_view &ref);
-	static double parseExprSum(std::string_view &ref);
-	static void skipSpaces(std::string_view &ref);
-	static double parseFunction(std::string_view &ref);
+	double parseSymbol(std::string_view &ref);
+	double parseDouble(std::string_view &ref);
+	double parseExprMul(std::string_view &ref);
+	double parseExprSum(std::string_view &ref);
+	void skipSpaces(std::string_view &ref);
+	double parseFunction(std::string_view &ref);
+	double ParseArguments(std::string_view &ref);
+
+	std::unique_ptr<PrintStrategy> m_printStrategy;
 };
 

@@ -1,7 +1,14 @@
 #include "stdafx.h"
 #include "Calculator.h"
 
-#define PI 3.14159265
+Calculator::Calculator(std::unique_ptr<PrintStrategy> && printStrategy)
+	:m_printStrategy(move(printStrategy))
+{
+}
+
+Calculator::~Calculator()
+{
+}
 
 double Calculator::parseExpr(std::string_view &ref)
 {
@@ -14,7 +21,6 @@ double Calculator::parseExpr(std::string_view &ref)
 	return result;
 }
 
-
 double Calculator::parseExprSum(std::string_view &ref)
 {
 	double value = parseExprMul(ref);
@@ -25,13 +31,13 @@ double Calculator::parseExprSum(std::string_view &ref)
 		{
 			ref.remove_prefix(1);
 			value += parseExprMul(ref);
-			std::cout << "+ ";
+			m_printStrategy->printAddition();
 		}
 		else if (!ref.empty() && ref[0] == '-')
 		{
 			ref.remove_prefix(1);
 			value -= parseExprMul(ref);
-			std::cout << "- ";
+			m_printStrategy->printSubstraction();
 		}
 		else
 		{
@@ -52,13 +58,13 @@ double Calculator::parseExprMul(std::string_view &ref)
 		{
 			ref.remove_prefix(1);
 			value *= parseSymbol(ref);
-			std::cout << "* ";
+			m_printStrategy->printMultiplication();
 		}
 		else if (!ref.empty() && ref[0] == '/')
 		{
 			ref.remove_prefix(1);
 			value /= parseSymbol(ref);
-			std::cout << "/ ";
+			m_printStrategy->printDivision();
 		}
 		else
 		{
@@ -88,7 +94,7 @@ double Calculator::parseSymbol(std::string_view &ref)
 			return std::numeric_limits<double>::quiet_NaN();
 		}
 	}
-	else if (!ref.empty() && !std::isdigit(ref[0]))
+	else if (!ref.empty() && !std::isdigit(ref[0]) && ref[0] != '-')
 	{
 		return parseFunction(ref);
 	}
@@ -107,14 +113,14 @@ double Calculator::parseFunction(std::string_view &ref)
 		if (partStr == std::string_view("sin"))
 		{
 			ref.remove_prefix(3);
-			std::cout << "sin";
-			return sin(parseSymbol(ref) * PI / 180);
+			m_printStrategy->printFunctionName("sin");
+			return sin(ParseArguments(ref) * M_PI / 180);
 		}
 		else if (partStr == std::string_view("cos"))
 		{
 			ref.remove_prefix(3);
-			std::cout << "cos";
-			return cos(parseSymbol(ref) * PI / 180);
+			m_printStrategy->printFunctionName("cos");
+			return cos(ParseArguments(ref) * M_PI / 180);
 		}
 		else
 		{
@@ -123,12 +129,12 @@ double Calculator::parseFunction(std::string_view &ref)
 			if (partStr == std::string_view("sqrt"))
 			{
 				ref.remove_prefix(4);
-				std::cout << "sqrt";
-				return sqrt(parseSymbol(ref));
+				m_printStrategy->printFunctionName("sqrt");
+				return sqrt(ParseArguments(ref));
 			}
 		}
 	}
-	catch(const std::out_of_range& e)
+	catch(const std::out_of_range&)
 	{
 		return std::numeric_limits<double>::quiet_NaN();
 	}
@@ -136,11 +142,44 @@ double Calculator::parseFunction(std::string_view &ref)
 	return std::numeric_limits<double>::quiet_NaN();
 }
 
+double Calculator::ParseArguments(std::string_view &ref)
+{
+	double value = 0;
+	if (!ref.empty() && ref[0] == '(')
+	{
+		ref.remove_prefix(1);
+		value = parseExprSum(ref);
+		skipSpaces(ref);
+		if (!ref.empty() && ref[0] == ')')
+		{
+			ref.remove_prefix(1);
+			return value;
+		}
+		else
+		{
+			return std::numeric_limits<double>::quiet_NaN();
+		}
+	}
+	else
+	{
+		return std::numeric_limits<double>::quiet_NaN();
+	}
+}
+
 double Calculator::parseDouble(std::string_view &ref)
 {
 	double value = 0;
+	bool isNegative = false;
 	bool parsedAny = false;
+
 	skipSpaces(ref);
+	if (!ref.empty() && ref[0] == '-')
+	{
+		isNegative = true;
+		ref.remove_prefix(1);
+	}
+	skipSpaces(ref);
+
 	while (!ref.empty() && std::isdigit(ref[0]))
 	{
 		parsedAny = true;
@@ -154,9 +193,14 @@ double Calculator::parseDouble(std::string_view &ref)
 		return std::numeric_limits<double>::quiet_NaN();
 	}
 
+	if (isNegative)
+	{
+		value *= -1;
+	}
+
 	if (ref.empty() || (ref[0] != '.'))
 	{
-		std::cout << value << " ";
+		m_printStrategy->printNumber(value);
 		return value;
 	}
 
@@ -170,7 +214,7 @@ double Calculator::parseDouble(std::string_view &ref)
 		ref.remove_prefix(1);
 	}
 
-	std::cout << value << " ";
+	m_printStrategy->printNumber(value);
 	return value;
 }
 
